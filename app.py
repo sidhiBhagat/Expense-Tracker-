@@ -12,7 +12,10 @@ from urllib.parse import urlparse
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=[
+    "http://localhost:3000",
+    "https://expense-tracker-mu-woad.vercel.app"
+])
 app.config["PROPAGATE_EXCEPTIONS"] = True
 
 #  JWT Secret 
