@@ -28,7 +28,7 @@ def get_db():
     - Single Railway DATABASE_URL: mysql://user:pass@host:port/dbname
     - Individual env vars: DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT
     """
-    database_url = os.getenv("DATABASE_URL")
+    database_url = os.getenv("MYSQL_URL") or os.getenv("DATABASE_URL")
 
     if database_url:
         parsed = urlparse(database_url)
