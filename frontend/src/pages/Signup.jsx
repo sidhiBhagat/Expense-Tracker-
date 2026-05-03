@@ -1,64 +1,55 @@
-// import { useState } from "react";
-// import { signupUser } from "../services/api";
-
-// function Signup() {
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-
-//   const handleSignup = async () => {
-//     const data = await signupUser({ email, password });
-
-//     if (data.success) {
-//       alert("Signup successful ✅");
-//     } else {
-//       alert("User already exists ❌");
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <h2>Signup</h2>
-
-//       <input onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
-//       <input onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
-
-//       <button onClick={handleSignup}>Signup</button>
-//     </div>
-//   );
-// }
-
-// export default Signup;
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Signup() {
-  const [username, setUsername] = useState(""); // ✅ fixed
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState("");
-
+  const [loading, setLoading] = useState(false);
+  // const BASE_URL = import.meta.env.VITE_API_URL;
+  
   const navigate = useNavigate();
 
   const handleSignup = async () => {
-    const res = await fetch("http://127.0.0.1:5000/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ username, email, password })
-    });
+    // Basic frontend validation
+    if (!username || !email || !password) {
+      setMsg("All fields are required");
+      return;
+    }
 
-    const data = await res.json();
+    if (password.length < 6) {
+      setMsg("Password must be at least 6 characters");
+      return;
+    }
 
-    if (data.success) {
-      setMsg("Signup successful ✅");
+    setLoading(true);
+    setMsg("");
 
-      setTimeout(() => {
-        navigate("/");
-      }, 1000);
-    } else {
-      setMsg(data.message);
+    try {
+      const res = await fetch("http://127.0.0.1:5000/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ username, email, password })
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setMsg("Signup successful ✅");
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      } else {
+        setMsg(data.message);
+      }
+    } catch (err) {
+      console.error("SIGNUP ERROR:", err);
+      setMsg("Could not connect to server. Try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -83,12 +74,12 @@ function Signup() {
         <input
           className="input"
           type="password"
-          placeholder="Create password"
+          placeholder="Create password (min 6 characters)"
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button className="btn" onClick={handleSignup}>
-          Sign Up
+        <button className="btn" onClick={handleSignup} disabled={loading}>
+          {loading ? "Signing up..." : "Sign Up"}
         </button>
 
         <p

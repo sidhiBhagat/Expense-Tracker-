@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 
 function Monthly() {
-  const user_id = localStorage.getItem("user_id");
+  const token = localStorage.getItem("token"); // JWT token
 
   const [month, setMonth] = useState("");
   const [data, setData] = useState([]);
@@ -11,10 +11,17 @@ function Monthly() {
 
   const fetchMonthly = async () => {
     if (!month) return;
-    const [year, mon] = month.split("-"); 
+    const [year, mon] = month.split("-");
     try {
       const res = await fetch(
-        `${BASE_URL}/monthly-expenses/${user_id}/${year}/${parseInt(mon)}`
+        `${BASE_URL}/monthly-expenses/${year}/${parseInt(mon)}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          }
+        }
       );
       const result = await res.json();
 
@@ -30,7 +37,6 @@ function Monthly() {
     fetchMonthly();
   }, [month]);
 
-  // 💰 Calculations
   const income = data
     .filter(t => t.type === "income")
     .reduce((acc, t) => acc + Number(t.amount), 0);
@@ -85,12 +91,11 @@ function Monthly() {
         {data.map((t) => (
           <div className="transaction-item" key={t.id}>
             <span>
-              {t.title} - ₹{t.amount} ({t.type}) | {
-                new Date(t.date).toLocaleDateString("en-IN", {
-                  day: "2-digit",
-                  month: "short"
-                })
-              }
+              {t.title} - ₹{t.amount} ({t.type}) |{" "}
+              {new Date(t.date).toLocaleDateString("en-IN", {
+                day: "2-digit",
+                month: "short"
+              })}
             </span>
           </div>
         ))}

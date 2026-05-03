@@ -1,113 +1,11 @@
-// import { useState } from "react";
-// import Navbar from "../components/Navbar";
 
-// function Dashboard() {
-//   const username = localStorage.getItem("username");
-
-//   const [title, setTitle] = useState("");
-//   const [amount, setAmount] = useState("");
-//   const [type, setType] = useState("expense");
-//   const [date, setDate] = useState("");
-//   const [transactions, setTransactions] = useState([]);
-
-//   const handleAdd = () => {
-//     if (!title || !amount || !date) return;
-
-//     const newItem = {
-//       id: Date.now(),
-//       title,
-//       amount: Number(amount),
-//       type,
-//       date
-//     };
-
-//     setTransactions([...transactions, newItem]);
-
-//     setTitle("");
-//     setAmount("");
-//     setDate("");
-//   };
-
-//   const handleDelete = (id) => {
-//     setTransactions(transactions.filter(t => t.id !== id));
-//   };
-
-//   return (
-//     <div className="dashboard">
-
-//       <Navbar />
-
-//       <h2 className="welcome">
-//         Hello {username}, this is your expense dashboard 👋
-//       </h2>
-
-//       {/* Add Form */}
-//       <div className="form-card">
-//         <h3>Add Transaction</h3>
-
-//         <input
-//           className="input"
-//           placeholder="Title"
-//           value={title}
-//           onChange={(e) => setTitle(e.target.value)}
-//         />
-
-//         <input
-//           className="input"
-//           placeholder="Amount"
-//           value={amount}
-//           onChange={(e) => setAmount(e.target.value)}
-//         />
-
-//         <input
-//           className="input"
-//           type="date"
-//           value={date}
-//           onChange={(e) => setDate(e.target.value)}
-//         />
-
-//         <select
-//           className="input"
-//           value={type}
-//           onChange={(e) => setType(e.target.value)}
-//         >
-//           <option value="expense">Expense</option>
-//           <option value="income">Income</option>
-//         </select>
-
-//         <button className="btn" onClick={handleAdd}>
-//           Add
-//         </button>
-//       </div>
-
-//       {/* List */}
-//       <div className="transaction-list">
-//         <h3>Transactions</h3>
-
-//         {transactions.map((t) => (
-//           <div className="transaction-item" key={t.id}>
-//             <span>
-//               {t.title} - ₹{t.amount} ({t.type}) | {t.date}
-//             </span>
-
-//             <button className="delete-btn" onClick={() => handleDelete(t.id)}>
-//               Delete
-//             </button>
-//           </div>
-//         ))}
-//       </div>
-
-//     </div>
-//   );
-// }
-
-// export default Dashboard;
 import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 
 function Dashboard() {
   const username = localStorage.getItem("username");
   const user_id = localStorage.getItem("user_id");
+  const token = localStorage.getItem("token");
 
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
@@ -134,7 +32,13 @@ function Dashboard() {
 
   const fetchExpenses = async () => {
     try {
-      const res = await fetch(`${BASE_URL}/expenses/${user_id}`);
+      const res = await fetch(`${BASE_URL}/expenses`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
+      });
       const data = await res.json();
 
       if (data.success) {
@@ -144,7 +48,6 @@ function Dashboard() {
       console.error(err);
     }
   };
-
   // 🔹 2. Add expense (API call)
   const handleAdd = async () => {
     if (!title || !amount || !date) return;
