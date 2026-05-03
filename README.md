@@ -75,5 +75,5 @@ and bcrypt password hashing.
 
 ## 🧪 Demo Credentials
 
-Email: test@gmail.com  
-Password: 123456
+Email: sidzie259@yahoo.com  
+Password: oceanBlueeyes
