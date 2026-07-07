@@ -27,7 +27,7 @@ function Signup() {
     setMsg("");
 
     try {
-      const res = await fetch("https://expense-tracker-production-3f89.up.railway.app/signup", {
+      const res = await fetch("http://13.207.189.198/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
