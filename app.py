@@ -14,7 +14,7 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app, origins=[
     "http://localhost:3000",
-    "https://expense-tracker-mu-woad.vercel.app",
+    # "https://expense-tracker-mu-woad.vercel.app",
     "http://13.207.189.198:3000"
 ])
 app.config["PROPAGATE_EXCEPTIONS"] = True
