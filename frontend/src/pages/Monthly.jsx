@@ -7,7 +7,7 @@ function Monthly() {
   const [month, setMonth] = useState("");
   const [data, setData] = useState([]);
 
-  const BASE_URL = "http://13.207.189.198:5000";
+  const BASE_URL = "http://13.207.189.198:5000/monthly";
 
   const fetchMonthly = async () => {
     if (!month) return;
