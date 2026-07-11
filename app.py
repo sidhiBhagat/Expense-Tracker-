@@ -18,11 +18,12 @@ CORS(app, origins=[
     "http://13.207.189.198:3000"
 ])
 app.config["PROPAGATE_EXCEPTIONS"] = True
+# JWT Config
+# JWT_EXPIRY_HOURS = int(os.getenv("JWT_EXPIRY_HOURS", "24"))  # Default to 24 hours if not set
+JWT_SECRET = os.getenv("JWT_SECRET")
+if not JWT_SECRET:
+    raise RuntimeError("JWT_SECRET environment variable is not set!")
 
-#  JWT Secret 
-# Add JWT_SECRET=some_long_random_string to your .env and Railway env vars
-JWT_SECRET = os.getenv("JWT_SECRET", "change_this_secret_in_production")
-JWT_EXPIRY_HOURS = 24
 
 
 #  DB Connection 
