@@ -27,7 +27,7 @@ function Signup() {
     setMsg("");
 
     try {
-      const res = await fetch("http://13.207.189.198:5000/signup", {
+      const res = await fetch("http://13.53.53.18:5000/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

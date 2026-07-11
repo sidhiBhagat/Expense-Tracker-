@@ -10,7 +10,7 @@ function Login() {
   const handleLogin = async () => {
     console.log("Sending request.....")
     try {
-      const res = await fetch("http://13.207.189.198:5000/login", {
+      const res = await fetch("http://13.53.53.18:5000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

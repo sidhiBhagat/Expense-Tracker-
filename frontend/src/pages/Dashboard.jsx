@@ -13,7 +13,7 @@ function Dashboard() {
   const [date, setDate] = useState("");
   const [transactions, setTransactions] = useState([]);
 
-  const BASE_URL = "http://13.207.189.198:5000";
+  const BASE_URL = "http://13.53.53.18:5000";
 
   const income = transactions
     .filter(t => t.type === "income")
